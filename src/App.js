@@ -1,25 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+
+// Game features
+import GamePage from "./features/GamePage/GamePage"
+
+// Global context
+import useGlobalData from "./globals/useGlobalData"
+import { createContext } from "react"
+export const GlobalDataContext = createContext()
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  const globalData = useGlobalData()
+
+  return (      
+    <GlobalDataContext.Provider value={globalData}>  
+      <BrowserRouter>
+        <Routes>
+          <Route path="game" element={<GamePage />} />
+          <Route path="*" element={<Navigate replace to='/game' />} />
+        </Routes>
+      </BrowserRouter>
+    </GlobalDataContext.Provider>
   );
 }
 
 export default App;
+
